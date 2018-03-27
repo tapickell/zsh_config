@@ -7,21 +7,23 @@ ZSH=$HOME/.oh-my-zsh
 # time that oh-my-zsh is loaded.
 ZSH_THEME="muse"
 
+plugins=(command-not-found chucknorris history cabal mosh mix rebar nvm battery heroku docker git aws comman-aliases jsontools knife last-working-dir lol npm nyan debian pip redis-cli sudo web-search)
+
 # Example aliases
 alias zshconfig="vim ~/.zshrc"
 alias ohmyzsh="vim  ~/.oh-my-zsh"
 
 # my alias
-alias list="ls -pals"
-alias nodb_test="SKIPRO=bananas SKIPDB=yes bundle exec rake minitest"
+alias list="ls -hAlF"
+alias gocode="cd ~/code"
 alias giti="git init"
 alias gita="git add ."
 alias gitr="git rm"
 alias gitc="git commit -m "
+alias gitlol='git commit -am "$(curl -s whatthecommit.com/index.txt)"'
 alias gits="git status"
-alias gitp="git push"
+alias grep='GREP_COLOR="1;37;41" LANG=C grep --color=auto'
 alias ttop="top -ocpu -R -F -s 2 -n30"
-alias gocode="cd /Volumes/ExtraSSD/code"
 alias gotmux="tmux new -s"
 alias ls='ls -G'
 alias ll='ls -la'
@@ -30,6 +32,12 @@ alias grep='GREP_COLOR="1;37;41" LANG=C grep --color=auto'
 alias pgrep='ps aux | grep'
 alias tn="tmux -2 new-session -s"
 alias tt="tmux -2 attach -t"
+alias msf="docker run -t -i kali-metasploit /bin/bash"
+alias myip="curl -s checkip.dyndns.org | sed -e 's/.*Current IP Address: //' -e 's/<.*$//'  "
+alias myspeed="curl -o /dev/null http://speedtest.wdc01.softlayer.com/downloads/test10.zip"
+alias whosonport="sudo lsof -i -P | grep"
+alias find_grep="find . -type f -print0 | xargs -0 grep -l"
+
 
 # Set to this to use case-sensitive completion
 # CASE_SENSITIVE="true"
@@ -63,7 +71,6 @@ export PATH=/usr/local/bin:/usr/local/sbin:~/bin:/usr/local/bin:/usr/local/sbin:
 # So no more 32-bit universal binary bullshit fucks shit up.
 export ARCHFLAGS="-arch x86_64"
 
-# Postgres Path
-export PATH=/Applications/Postgres.app/Contents/Versions/9.3/bin:$PATH
-
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+function gitsdir {
+  ls | grep $1 | while read -r line ; do cd $line; echo $line; gits; git log -1 --pretty=format:"Last Commit%n%h%n%an%n%ae%n%ar%n%s%n%b%n" |& cat; echo "\n"; cd ../; done
+}
